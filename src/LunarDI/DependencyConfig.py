@@ -22,7 +22,7 @@ class DependencyConfig:
         self.instance = instance
         return self
     
-    def impl_type(self, impl_type):
+    def type(self, impl_type):
         self.instance_type = impl_type
         return self 
 

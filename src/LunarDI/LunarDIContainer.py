@@ -10,8 +10,7 @@ class LunarDIContainer(ContainerInterface):
     container = {}
 
     def __init__(self):
-        config = self.add_singleton(ContainerInterface)
-        config.impl(self)
+        config = self.add_singleton(ContainerInterface).impl(self)
         
     def add_transient(self, t1) -> DependencyConfig:
         return self._add_transient(t1, t1)
@@ -44,7 +43,7 @@ class LunarDIContainer(ContainerInterface):
                 if not config.instance is None:
                     return config.instance
 
-                if not config.factory is None:
+                if not config.factory_method is None:
                     config.instance = config.factory_method()
                 else:
                     config.instance = self.create_impl(config)
