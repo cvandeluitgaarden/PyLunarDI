@@ -4,9 +4,9 @@ from Product.ProductServiceInterface import ProductServiceInterface
 
 container = LunarDIContainer()
 if __name__ == "__main__":
-    Config.registerProductServices(container)
+    Config.add_product_feature(container)
     impl = container.resolve(ProductServiceInterface)
-    print(impl.getProduct("12"))
+    print(impl.get_product("12"))
 
 
 

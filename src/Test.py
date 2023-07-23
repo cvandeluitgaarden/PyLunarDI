@@ -7,5 +7,5 @@ class Test:
 
     def pr(self):
         print(self.service.__dict__)
-        self.service.getProduct(12)
+        self.service.get_product(12)
 

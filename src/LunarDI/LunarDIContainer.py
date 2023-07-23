@@ -5,7 +5,7 @@ import inspect
 
 from LunarDI.ContainerInterface import ContainerInterface
 
-class DIType(Enum):
+class Lifetime(Enum):
     SINGLETON = 0
     TRANSIENT = 1
     
@@ -19,15 +19,15 @@ class LunarDIContainer(ContainerInterface):
     impls = {}
 
     def __init__(self):
-        self.addSingleton(ContainerInterface, self)
+        self.add_singleton(ContainerInterface, self)
 
-    def addTransient(self, type1, type2):
-        self.container.update({type1 : { self.IMPL_TYPE: type2, self.TYPE : DIType.TRANSIENT }})
+    def add_transient(self, t1, t2):
+        self.container.update({t1 : { self.IMPL_TYPE: t2, self.TYPE : Lifetime.TRANSIENT }})
         return self
 
-    def addSingleton(self, type1, type2):
-        self.container.update({type1 : { self.IMPL_TYPE: type2, self.TYPE : DIType.SINGLETON }})
-        self.impls.update({ type1 : type2 })
+    def add_singleton(self, t1, t2):
+        self.container.update({t1 : { self.IMPL_TYPE: t2, self.TYPE : Lifetime.SINGLETON }})
+        self.impls.update({ t1 : t2 })
         return self
 
 
@@ -40,24 +40,24 @@ class LunarDIContainer(ContainerInterface):
         return classes
 
     def resolve(self, t):
-        implType = self.container[t]
+        impl_type = self.container[t]
 
-        match implType[self.TYPE]:
-            case DIType.SINGLETON:
-                if not implType[self.IMPL_TYPE] in self.impls:
-                    self.impls.update({ implType[self.IMPL_TYPE] : self.createInst(implType) })
+        match impl_type[self.TYPE]:
+            case Lifetime.SINGLETON:
+                if not impl_type[self.IMPL_TYPE] in self.impls:
+                    self.impls.update({ impl_type[self.IMPL_TYPE] : self.create_impl(impl_type) })
 
-                return self.impls[implType[self.IMPL_TYPE]]
+                return self.impls[impl_type[self.IMPL_TYPE]]
             case _:
-                return self.createInst(implType)
+                return self.create_impl(impl_type)
     
-    def createInst(self, type1):
-        segments = type1[self.IMPL_TYPE].__module__.split(".")
-        module = importlib.import_module(type1[self.IMPL_TYPE].__module__)
-        class_ = getattr(module, segments[-1])
-        args = self.get_args(class_)
+    def create_impl(self, t):
+        segments = t[self.IMPL_TYPE].__module__.split(".")
+        m = importlib.import_module(t[self.IMPL_TYPE].__module__)
+        c = getattr(m, segments[-1])
+        args = self.get_args(c)
         
         if(len(args) > 0): 
-            return class_(*args) 
+            return c(*args) 
         else: 
-            return class_()
+            return c()

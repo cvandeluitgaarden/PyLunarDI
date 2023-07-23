@@ -8,5 +8,5 @@ class ProductService(ProductServiceInterface):
     def __init__(self, repository: ProductRepositoryInterface, container:ContainerInterface):
         self.repository = repository
 
-    def getProduct(self, productNumber:str):
-        return self.repository.getProducts([ productNumber ])
+    def get_product(self, productNumber:str):
+        return self.repository.get_products([ productNumber ])

@@ -1,3 +1,3 @@
 class ProductServiceInterface():
-    def getProduct(self, productNumber:str):
+    def get_product(self, productNumber:str):
         pass

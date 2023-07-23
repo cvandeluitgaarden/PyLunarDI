@@ -1,3 +1,3 @@
 class ContainerInterface:
-    def addTransient(self, type1, type2):
+    def add_transient(self, type1, type2):
         pass

@@ -7,6 +7,6 @@ from Product.ProductServiceInterface import ProductServiceInterface
 
 class Config:
     @staticmethod
-    def registerProductServices(container:ContainerInterface):    
-        container.addTransient(ProductRepositoryInterface, ProductRepository)
-        container.addTransient(ProductServiceInterface, ProductService)
+    def add_product_feature(container:ContainerInterface):    
+        container.add_transient(ProductRepositoryInterface, ProductRepository)
+        container.add_transient(ProductServiceInterface, ProductService)

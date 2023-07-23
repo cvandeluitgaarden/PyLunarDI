@@ -1,3 +1,3 @@
 class ProductRepositoryInterface:
-    def getProducts(self, productNumbers : list[str]):
+    def get_products(self, productNumbers : list[str]):
         pass
