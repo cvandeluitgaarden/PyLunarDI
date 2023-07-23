@@ -1,4 +1,4 @@
-from ConnectorInterface import ConnectorInterface
+from Connector import ConnectorInterface
 
 class ExampleGui:
 
@@ -7,9 +7,9 @@ class ExampleGui:
         self.name = "ExampleGuid"
 
     def open(self, port):
-        print("{0}: open({0})".format(self.name, port))
+        print("{}: open({})".format(self.name, port))
         self.connector.open(port)
     
     def close(self):
-        print("{0}: close()".format(self.name))
+        print("{}: close()".format(self.name))
         self.connector.close()

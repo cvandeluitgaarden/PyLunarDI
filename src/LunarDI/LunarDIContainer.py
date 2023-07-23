@@ -1,8 +1,43 @@
+from enum import Enum
 import importlib
 import inspect
 
-from LunarDI.ContainerInterface import ContainerInterface
-from LunarDI.DependencyConfig import DependencyConfig, Lifetime
+class Lifetime(Enum):
+    NONE = 0
+    SINGLETON = 1
+    TRANSIENT = 2
+
+class DependencyConfig:
+
+    factory_method = None
+    instance = None
+
+    def __init__(self, t1, t2):
+        self.declaration_type = t1
+        self.instance_type = t2
+
+    def factory(self, factory_method):
+        self.factory_method = factory_method
+        return self
+
+    def impl(self, instance):
+        self.instance = instance
+        return self
+    
+    def type(self, impl_type):
+        self.instance_type = impl_type
+        return self 
+
+    def lifetime(self, lifetime:Lifetime):
+        self.lifetime = lifetime
+        return self
+
+class ContainerInterface:
+    def add_transient(self, t1) -> DependencyConfig:
+        pass
+
+    def add_singleton(self, t1) -> DependencyConfig:
+        pass
 
 class LunarDIContainer(ContainerInterface):
 
@@ -58,7 +93,7 @@ class LunarDIContainer(ContainerInterface):
     def create_impl(self, config:DependencyConfig):
         segments = config.instance_type.__module__.split(".")
         module = importlib.import_module(config.instance_type.__module__)
-        clss = getattr(module, segments[-1])
+        clss = getattr(module, config.instance_type.__name__)
         args = self.get_args(clss)
         
         if(len(args) > 0): 
