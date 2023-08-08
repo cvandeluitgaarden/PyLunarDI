@@ -2,6 +2,7 @@ from enum import Enum
 from Dictionary import DictionaryInterface
 
 class ConnectorInterface:
+
     def open(self, port:int) -> bool:
         pass
 
