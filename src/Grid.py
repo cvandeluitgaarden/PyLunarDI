@@ -10,66 +10,77 @@ class Grid:
         self.cols = int(self.x / resolution)
         self.rows = int(self.y / resolution)
         self.grid = self.makegrid(self.cols, self.rows)
+
+        self.glider = [[0,1,0],[0,0,1], [1,1,1]]
+        self.gun = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],[0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,1,0,0,0,0,1,0,1],[0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1],[0,0,0,0,0,0,0,0,0,0,0,0,1,1]]
         
 
     def makegrid(self, x:int, y:int):
         grid = numpy.random.randint(0, 1, size=(x, y))
 
-        grid[0][4] = 1
-        grid[0][5] = 1
-        grid[1][4] = 1
-        grid[1][5] = 1
+        
+        # x = 10
+        # grid[x +0][x +4] = 1
+        # grid[x +0][x +5] = 1
+        # grid[x +1][x +4] = 1
+        # grid[x +1][x +5] = 1
 
 
-        grid[10][4] = 1
-        grid[10][5] = 1
-        grid[10][6] = 1
+        # grid[x +10][x +4] = 1
+        # grid[x +10][x +5] = 1
+        # grid[x +10][x +6] = 1
 
-        grid[11][3] = 1
-        grid[11][7] = 1
+        # grid[x +11][x +3] = 1
+        # grid[x +11][x +7] = 1
 
-        grid[12][2] = 1
-        grid[12][8] = 1
+        # grid[x +12][x +2] = 1
+        # grid[x +12][x +8] = 1
 
-        grid[13][2] = 1
-        grid[13][8] = 1
+        # grid[x +13][x +2] = 1
+        # grid[x +13][x +8] = 1
 
-        grid[14][5] = 1
+        # grid[x +14][x +5] = 1
 
-        grid[15][3] = 1
-        grid[15][7] = 1
+        # grid[x +15][x +3] = 1
+        # grid[x +15][x +7] = 1
 
-        grid[16][4] = 1
-        grid[16][5] = 1
-        grid[16][6] = 1
+        # grid[x +16][x +4] = 1
+        # grid[x +16][x +5] = 1
+        # grid[x +16][x +6] = 1
 
-        grid[17][5] = 1
+        # grid[x +17][x +5] = 1
 
-        grid[20][2] = 1
-        grid[20][3] = 1
-        grid[20][4] = 1
+        # grid[x +20][x +2] = 1
+        # grid[x +20][x +3] = 1
+        # grid[x +20][x +4] = 1
 
-        grid[21][2] = 1
-        grid[21][3] = 1
-        grid[21][4] = 1
+        # grid[x +21][x +2] = 1
+        # grid[x +21][x +3] = 1
+        # grid[x +21][x +4] = 1
 
-        grid[22][1] = 1
-        grid[22][5] = 1
+        # grid[x +22][x +1] = 1
+        # grid[x +22][x +5] = 1
 
-        grid[24][0] = 1
-        grid[24][1] = 1
-        grid[24][6] = 1
-        grid[24][7] = 1
+        # grid[x +24][x +0] = 1
+        # grid[x +24][x +1] = 1
+        # grid[x +24][x +6] = 1
+        # grid[x +24][x +7] = 1
 
-        grid[34][2] = 1
-        grid[34][3] = 1
+        # grid[x +34][x +2] = 1
+        # grid[x +34][x +3] = 1
 
-        grid[35][2] = 1
-        grid[35][3] = 1
+        # grid[x +35][x +2] = 1
+        # grid[x +35][x +3] = 1
         
 
         return grid
-        
+    
+    def insert(self, arr, col, row):
+        rows = len(arr)
+        for i in range(rows):
+            cols = len(arr[i])
+            for j in range(cols):
+                self.grid[i + col][j + row] = arr[i][j]
     
     def next_gen(self):
         next_grid = self.makegrid(self.cols, self.rows)
@@ -88,6 +99,11 @@ class Grid:
         
         return next_grid
 
+    def add(self, prc):
+        for i in range(int(self.cols * self.rows * (prc / 100))):
+            x = numpy.random.randint(0, self.cols)
+            y = numpy.random.randint(0, self.rows)
+            self.grid[x][y] = 1
 
     def diff(self, grid1, grid2):
 
@@ -113,9 +129,9 @@ class Grid:
             state = diff[i][2]
 
             if state == 1:
-                pygame.draw.rect(self.screen, WHITE, [x * self.resolution, y * self.resolution, self.resolution - 1, self.resolution - 1])
+                pygame.draw.rect(self.screen, WHITE, [x * self.resolution, y * self.resolution, self.resolution - 1, self.resolution - 1], border_radius=5)
             else:
-                pygame.draw.rect(self.screen, BLACK, [x * self.resolution, y * self.resolution, self.resolution - 1, self.resolution - 1])
+                pygame.draw.rect(self.screen, BLACK, [x * self.resolution, y * self.resolution, self.resolution - 1, self.resolution - 1], border_radius= 5)
 
 
         # for i in range(self.cols):
